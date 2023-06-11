@@ -1,17 +1,29 @@
-var data =  require("./fakeData");
+const data = require("./fakeData");
 
-module.exports = function(req, res){
-  
-    var name =  req.body.name;
-    var jov =  req.body.job;
-    
-    var newUser = {
-        name: name,
-        job: job,
+let nextId = 2;
+
+function getNextId() {
+  const id = nextId;
+  nextId++;
+  return id;
+}
+
+module.exports = function (req, res) {
+
+    const { name, job } = req.body;
+
+    if (!name || !job) {
+        return res.status(400).json({ error: 'Name and job are required' });
     }
 
-    data.push(newUser)
-    
-    res.send(newUser);
+    const newObject = {
+        id: getNextId(),
+        name,
+        job
+    };
+
+    data.push(newObject);
+
+    res.status(201).json({ message: 'Object added successfully' });
 
 };

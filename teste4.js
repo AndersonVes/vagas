@@ -1,13 +1,25 @@
-var data =  require("./fakeData");
+const data =  require("./fakeData");
 
 module.exports =  function(req, res) {
   
-    var id =  req.query.id;
+    const id =  req.query.id;
 
-    const reg = data.find(d => id == id);
-    reg.name = req.body.name;
-    reg.job = req.body.job;
+    const { name, job } = req.body;
 
-    res.send(reg);
+    const user = data.find(obj => obj.id == id);
+  
+    if (!user) {
+      return res.status(404).json({ error: 'Object not found' });
+    }
+  
+    if (name) {
+      user.name = name;
+    }
+  
+    if (job) {
+      user.job = job;
+    }
+  
+    res.status(200).json({ message: 'Object updated successfully' });
 
 };

@@ -1,9 +1,15 @@
+const data =  require("./fakeData");
 
+module.exports = function (req, res) {
+    if (!req.query.id) {
+        res.status(404).send({ message: "missing ID" })
+        return
+    }
 
-module.exports = function(req, res){
-    
-    var name =  req.query.name;
+    const id = req.query.id;
 
-    res.send("Usuário " +  name  + "  foi lido 0 vezes.");
+    const user = data.find(obj => obj.id == id)
+
+    res.send({"message":`User ${user.name} was read ${user.accessCount || 0} times.`});
 
 };
